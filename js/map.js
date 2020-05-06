@@ -9,6 +9,8 @@ const RD = new L.Proj.CRS('EPSG:28992', '+proj=sterea +lat_0=52.15616055555555 +
 
 const map = new L.Map('map-canvas', {
     crs: RD,
+    zoom: 6,
+    minZoom: 5,
 });
 map.setView([52.070, 4.316667], 7);
 map.attributionControl.setPrefix('');
@@ -83,18 +85,92 @@ function collapseNavbar(e) {
 
 map.on('mousedown', collapseNavbar)
 
+// Show user location marker on map
 
-// Add GPS location
-const gps = new L.Control.Gps({
-    autoActive: true,
-    // autoCenter: true
+const blueDot = L.icon({
+    iconUrl: 'images/bluedot.gif',
+    iconSize: [70, 70],
+    iconAnchor: [35, 60],
+})
+
+let activeMarker;
+let activeCircle;
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    if (typeof activeMarker !== "undefined")
+        map.removeLayer(activeMarker);
+
+    if (typeof activeCircle !== "undefined")
+        map.removeLayer(activeCircle);
+
+    activeMarker = L.marker(e.latlng, {icon: blueDot}).addTo(map)
+    activeCircle = L.circle(e.latlng, radius).addTo(map);
+
+    console.log(e.latlng);
+}
+
+map.on('locationfound', onLocationFound);
+
+function onLocationError(e) {
+    alert(e.message);
+}
+
+map.on('locationerror', onLocationError);
+
+// Create localization control element
+
+L.Control.Localization = L.Control.extend({
+    onAdd: function(map) {
+        let img = L.DomUtil.create('img');
+
+        L.DomUtil.addClass(img, "icon-localization");
+
+        return img;
+    },
+
+    onRemove: function(map){
+        // Nothing to do here
+    }
 });
 
-gps.on('gps:located', function (e) {
-    // e.marker.bindPopup(e.latlng.toString()).openPopup()
-    console.log(e.latlng, map.getCenter())
-}).on('gps:disabled', function (e) {
-    e.marker.closePopup()
-});
+L.control.localization = function(opts) {
+    return new L.Control.Localization(opts);
+}
 
-gps.addTo(map);
+L.control.localization({ position: 'topleft'}).addTo(map);
+
+$(".icon-localization").on("click", toggleLocalization);
+
+
+// Handle GPS logging
+
+let gpsOn = false;
+
+function locateMe(e){
+    if (gpsOn) {
+        map.locate();
+        setTimeout(locateMe, 1000);
+    }
+}
+
+function toggleLocalization(e){
+    if (!gpsOn) {
+        gpsOn = true;
+
+        map.locate({setView: true, maxZoom: 16});
+
+        $(this).css("background-image", "url(../images/localization_activated.png)");
+        setTimeout(locateMe, 100);
+
+    } else {
+        gpsOn = false;
+
+        map.removeLayer(activeMarker);
+        map.removeLayer(activeCircle);
+
+        $(this).css("background-image", "url(../images/localization.png)");
+    }
+}
+

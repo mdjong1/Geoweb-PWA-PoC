@@ -32,3 +32,18 @@ header {
     text-decoration: underline;
 }
 
+.icon-localization {
+    border-radius: 7px;
+    background-image: url('../images/localization.png');
+    background-size: 100%;
+    width: 26px;
+    height: 26px;
+    -webkit-box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 12px -2px rgba(0,0,0,0.75);
+}
+
+.icon-localization:hover {
+    background-image: url('../images/localization_hover.png');
+    cursor: pointer;
+}
