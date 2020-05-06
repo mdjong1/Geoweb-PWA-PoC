@@ -108,6 +108,8 @@ function onLocationFound(e) {
     activeMarker = L.marker(e.latlng, {icon: blueDot}).addTo(map)
     activeCircle = L.circle(e.latlng, radius).addTo(map);
 
+    updateGpsTrack(e.latlng);
+
     console.log(e.latlng);
 }
 
@@ -174,3 +176,16 @@ function toggleLocalization(e){
     }
 }
 
+// Draw GPS track
+
+let gpsTrack;
+let gpsLocations = [];
+
+function updateGpsTrack(latlng) {
+    gpsLocations.push([latlng['lat'], latlng['lng']]);
+
+    if (typeof gpsTrack !== "undefined")
+        map.removeLayer(gpsTrack);
+
+    gpsTrack = L.polyline(gpsLocations, {color: 'red'}).addTo(map);
+}
