@@ -33,14 +33,25 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Export my track
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" id="geojson-export">GeoJSON</a>
+                        <a class="dropdown-item" href="#">KML</a>
+                    </div>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" id="searchInput">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search on map" id="searchInput">
                 <button class="btn btn-outline-success my-2 my-sm-0" id="searchButton">Search</button>
             </form>
         </div>
     </nav>
 </header>
+
+<a id="downloadAnchorElem" style="display:none"></a>
 
 <main>
     <div id="map-canvas"></div>
@@ -74,5 +85,7 @@
 
 <script src="js/map.js"></script>
 <script src="js/custom.js"></script>
+<script src="js/export.js"></script>
+<script src="js/utils.js"></script>
 
 </html>
