@@ -1,3 +1,15 @@
+// PWA stuff
+// https://levelup.gitconnected.com/build-a-pwa-using-only-vanilla-javascript-bdf1eee6f37a
+// Service worker
+if('serviceWorker' in navigator){
+    try {
+        navigator.serviceWorker.register('serviceWorker.js');
+        console.log("Service Worker Registered");
+    } catch (error) {
+        console.log("Service Worker Registration Failed");
+    }
+}
+
 // Collapse navbar when moving map
 function collapseNavbar(e) {
     if ($("#navbarToggler").hasClass("show")) {

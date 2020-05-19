@@ -22,7 +22,7 @@ module.exports = function tokml(geojson, options) {
                 documentName(options) +
                 documentDescription(options) +
                 root(geojson, options)
-               ), [['xmlns', 'http://www.opengis.net/kml/2.2']]);
+               ), [['xmlns', 'https://www.opengis.net/kml/2.2']]);
 };
 
 function feature(options, styleHashesArray) {

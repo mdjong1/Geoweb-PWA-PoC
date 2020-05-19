@@ -1,6 +1,6 @@
 // Credits to Martijn and Marian from GEO1007 Assignment 2 Lab 4
 
-// http://compuron.nl/leaflet/index.html
+// https://compuron.nl/leaflet/index.html
 const RD = new L.Proj.CRS(
     'EPSG:28992',
     '+proj=sterea +lat_0=52.15616055555555 +lon_0=5.38763888888889 +k=0.9999079 +x_0=155000 +y_0=463000 +ellps=bessel +units=m +towgs84=565.2369,50.0087,465.658,-0.406857330322398,0.350732676542563,-1.8703473836068,4.0812 +no_defs', {
@@ -18,14 +18,14 @@ map.setView([52.070, 4.316667], 7);
 map.attributionControl.setPrefix('');
 
 
-const basemap_pdok = new L.TileLayer('http://geodata.nationaalgeoregister.nl/tms/1.0.0/brtachtergrondkaart/{z}/{x}/{y}.png', {
+const basemap_pdok = new L.TileLayer('https://geodata.nationaalgeoregister.nl/tms/1.0.0/brtachtergrondkaart/{z}/{x}/{y}.png', {
     minZoom: 0,
     maxZoom: 13,
     tms: true,
-    errorTileUrl: 'http://www.webmapper.net/theme/img/missing-tile.png',
+    errorTileUrl: 'https://www.webmapper.net/theme/img/missing-tile.png',
 });
 basemap_pdok.getAttribution = function () {
-    return 'BRT Achtergrondkaart <a href="http://www.kadaster.nl">Kadaster</a>.';
+    return 'BRT Achtergrondkaart <a href="https://www.kadaster.nl">Kadaster</a>.';
 }
 basemap_pdok.addTo(map);
 
@@ -38,7 +38,7 @@ const ahn3_pdok = new L.tileLayer.wms(wms_ahn3, {
     pointerCursor: true
 });
 ahn3_pdok.getAttribution = function () {
-    return 'AHN3 Hoogtebestand <a href="http://www.kadaster.nl">Kadaster</a>.';
+    return 'AHN3 Hoogtebestand <a href="https://www.kadaster.nl">Kadaster</a>.';
 }
 
 const wms_aerial = "https://geodata.nationaalgeoregister.nl/luchtfoto/rgb/wms?";
@@ -51,7 +51,7 @@ const basemap_aerial = new L.tileLayer.wms(wms_aerial, {
     pointerCursor: true
 });
 basemap_aerial.getAttribution = function () {
-    return 'Luchtfoto WMS <a href="http://www.kadaster.nl">Kadaster</a>.';
+    return 'Luchtfoto WMS <a href="https://www.kadaster.nl">Kadaster</a>.';
 }
 
 const wms_sound = "https://geodata.nationaalgeoregister.nl/rwsgeluidskaarten/ows?"
@@ -61,7 +61,7 @@ const sound = new L.tileLayer.wms(wms_sound, {
     crs: RD,
     format: 'image/png',
     transparent: true,
-    attribution: '© <a href="http://www.rws.nl/"> Rijkswaterstaat</a>',
+    attribution: '© <a href="https://www.rws.nl/"> Rijkswaterstaat</a>',
     pointerCursor: true,
 });
 
