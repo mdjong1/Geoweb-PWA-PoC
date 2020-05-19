@@ -1,9 +1,9 @@
 // PWA stuff
 // https://levelup.gitconnected.com/build-a-pwa-using-only-vanilla-javascript-bdf1eee6f37a
 // Service worker
-if('serviceWorker' in navigator){
+if("serviceWorker" in navigator){
     try {
-        navigator.serviceWorker.register('serviceWorker.js');
+        navigator.serviceWorker.register("serviceWorker.js");
         console.log("Service Worker Registered");
     } catch (error) {
         console.log("Service Worker Registration Failed");
@@ -17,12 +17,12 @@ function collapseNavbar(e) {
     }
 }
 
-map.on('mousedown', collapseNavbar)
+map.on("mousedown", collapseNavbar)
 
 // Show user location marker on map
 
 const blueDot = L.icon({
-    iconUrl: 'images/bluedot.gif',
+    iconUrl: "images/bluedot.gif",
     iconSize: [70, 70],
     iconAnchor: [35, 60],
 })
@@ -47,19 +47,19 @@ function onLocationFound(e) {
     console.log(e.latlng);
 }
 
-map.on('locationfound', onLocationFound);
+map.on("locationfound", onLocationFound);
 
 function onLocationError(e) {
     alert(e.message);
 }
 
-map.on('locationerror', onLocationError);
+map.on("locationerror", onLocationError);
 
 // Create localization control element
 
 L.Control.Localization = L.Control.extend({
     onAdd: function (map) {
-        let img = L.DomUtil.create('img');
+        let img = L.DomUtil.create("img");
 
         L.DomUtil.addClass(img, "icon-localization");
 
@@ -75,7 +75,7 @@ L.control.localization = function (opts) {
     return new L.Control.Localization(opts);
 }
 
-L.control.localization({position: 'topleft'}).addTo(map);
+L.control.localization({position: "topleft"}).addTo(map);
 
 $(".icon-localization").on("click", toggleLocalization);
 
@@ -116,12 +116,12 @@ let gpsTrack;
 let gpsLocations = [];
 
 function updateGpsTrack(latlng) {
-    gpsLocations.push([latlng['lat'], latlng['lng']]);
+    gpsLocations.push([latlng["lat"], latlng["lng"]]);
 
     if (typeof gpsTrack !== "undefined")
         map.removeLayer(gpsTrack);
 
-    gpsTrack = L.polyline(gpsLocations, {color: 'red'}).addTo(map);
+    gpsTrack = L.polyline(gpsLocations, {color: "red"}).addTo(map);
 }
 
 // Handle Search button
@@ -139,9 +139,9 @@ function findAndCenterLocation(e) {
             q: searchQuery
         })
             .done(function (data) {
-                if (data['response']['docs'].length > 0) {
+                if (data["response"]["docs"].length > 0) {
                     console.log(data);
-                    resultCoordinatesPoint = data['response']['docs'][0]['centroide_ll'];
+                    resultCoordinatesPoint = data["response"]["docs"][0]["centroide_ll"];
                     console.log(resultCoordinatesPoint);
                     latLng = resultCoordinatesPoint.split("(")[1].split(")")[0].split(" ");
                     map.setView(new L.LatLng(latLng[1], latLng[0]), 9, {animation: true});
@@ -158,4 +158,42 @@ function findAndCenterLocation(e) {
 
 $("#searchButton").on("click", findAndCenterLocation);
 
+// Handle import related functions
 
+$("#uploadButton").on("click", uploadNewGeometryFile);
+
+function uploadNewGeometryFile(){
+    const file = $("#geometryFile").prop("files")[0];
+
+    const reader = new FileReader();
+    reader.readAsText(file);
+
+    if (file.type === "application/json") {
+
+        reader.onloadend = function () {
+            const uploadContent = JSON.parse(reader.result);
+
+            const errors = geojsonhint.hint(uploadContent);
+            if (errors.length !== 0){
+                // Something wrong
+                window.alert(
+                    "Something was wrong with your file!\n" +
+                    errors[0]["message"] +
+                    "\nOn line: " +
+                    errors[0]["line"]
+                );
+            }
+            else {
+                // All good, let's go!
+                $('#uploadModal').modal('hide')
+                L.geoJSON(uploadContent.features).addTo(map);
+            }
+        }
+
+    }
+    else {
+        window.alert("Unfortunately this file type is unsupported at this moment in time!");
+    }
+
+
+}
